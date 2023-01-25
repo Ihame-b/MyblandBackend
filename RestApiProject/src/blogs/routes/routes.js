@@ -1,5 +1,5 @@
 const express = require("express")
-const posts = require("./controller/post")
+const posts = require("../controller/post")
 
 
 const route = express.Router()

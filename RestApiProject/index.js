@@ -1,5 +1,5 @@
 const express = require("express")
-const routes = require("./src/routes")
+const routes = require("./src/blogs/routes/routes")
 // const routes =require("./src/routes")
 const mongose = require("mongoose")
 
