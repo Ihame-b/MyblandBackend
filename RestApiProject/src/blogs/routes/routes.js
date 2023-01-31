@@ -4,10 +4,10 @@ const posts = require("../controller/post")
 
 const route = express.Router()
 
-route.get('/', posts.getAll);
-route.post('/', posts.createPost);
-route.put("/:id", posts.updatePost);
-route.delete("/:id", posts.deletePost);
+route.get('/blog/', posts.getAll);
+route.post('/blog/', posts.createPost);
+route.put("/blog/:id", posts.updatePost);
+route.delete("/blog/:id", posts.deletePost);
 
 module.exports = route
 
