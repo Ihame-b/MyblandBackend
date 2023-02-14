@@ -1,5 +1,5 @@
 const  bcrypt = require ("bcrypt")
-const jwt = ('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 const users = require("../schema/post")
 
@@ -21,9 +21,8 @@ const getAll = async (req, res) => {
     try {
     
     const {name, email,password} = req.body;
-    const newUser = new users({name, email,password})
-    // const createdUser = await newUser.save()
-    bcrypt.hash(newUser.password, 10, (error, hash) =>{
+    const newUser =  new users({name, email,password})
+    await bcrypt.hash(newUser.password, 10, (error, hash) =>{
       if (error) {
         console.log(error);
         const responseObject = {error: 'Internal Error'}
@@ -37,13 +36,26 @@ const getAll = async (req, res) => {
     .status(201)
     .json({
         message: "User created successfully", 
-        // data: responseObject
+        // data: newUser
     })
 } catch (error) {
     console.log(error)
 }
 };
 
+// post without hash
+// const createUser = async (req, res) => {
+//   try {
+//     const { name, email,password } = req.body;
+//     const newPost = new users({ name, email,password });
+//     const createdPost = await newPost.save();
+//     res
+//       .status(201)
+//       .json({ message: "Post created successfully", data: createdPost });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
 
 
 const updateUser = async (req, res) => {
@@ -88,9 +100,8 @@ const updateUser = async (req, res) => {
     const data = req.body
     // var email = req.body.email;
     // var password = req.body.password;
-    // const {email,password} = req.body;
-    const newUser = users({email,password})
-    newUser =users.find(users.email == data.email)
+    const {email,password} = req.body; 
+    const newUser = await users.findOne({email : data.email}) 
     if (!newUser) return res.status(400).json({error: 'Invalid email or password'})
     bcrypt.compare(data.password, newUser.password, (err, verified)=>{
       if (err) {
@@ -98,7 +109,7 @@ const updateUser = async (req, res) => {
         status =500
       }
       if (verified) {
-        const token = jwt.sign(newUser, 'mysecrete', {expiresIn: 60*5})
+        const token = jwt.sign({email: newUser.email}, 'mysecrete', {expiresIn: 60*5})
         responseObject = {message: `welcome ${newUser.name}`, token}
         status = 200
       } else {

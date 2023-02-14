@@ -13,13 +13,13 @@ const getAll = async (req, res) => {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  };
+  };  
 
  const createContact = async (req, res) =>{
 
     try {
-    const {phone, email, address} = req.body;
-    const newPost = new posts({phone, email, address})
+    const {phone, name, email, subject, message} = req.body;
+    const newPost = new posts({phone, name, email, subject, message})
     const createdPost = await newPost.save()
     res
     .status(201)

@@ -18,8 +18,8 @@ const getAll = async (req, res) => {
  const createPost = async (req, res) =>{
 
     try {
-    const {title, description} = req.body;
-    const newPost = new posts({title, description})
+    const {image, title, description1, description2} = req.body;
+    const newPost = new posts({image, title, description1, description2})
     const createdPost = await newPost.save()
     res
     .status(201)

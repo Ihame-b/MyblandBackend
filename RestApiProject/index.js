@@ -1,6 +1,6 @@
 const express = require("express")
-const swaggerUI = require('swagger-ui-express')
-const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUI = require("swagger-ui-express")
+const swaggerJSDoc = require("swagger-jsdoc")
 const routesblogs = require("./src/blogs/routes/routes")
 const routesusers = require("./src/user/routes/routes")
 const routescomments = require("./src/comments/routes/comment")
@@ -10,39 +10,33 @@ const mongose = require("mongoose")
 const app =express()
 app.use(express.json());
 
-const options = {
-    definition: {
-        openapi: '3.0.0',
-        info: {
-            title: "IHAME BUSINESS API",
-            version: "1.0.0",
+
+const swaggerOptions = {  
+    swaggerDefinition: {
+        openapi : '3.0.0',
+        info : {
+            title: 'IHAME Apis documentation',
+            version: '1.0.0',
+            description: 'Blog,contact,authentication and comment APIs',
+            contact:{
+                name :"IHAME"
+            },
         },
-        servers: [
-            {
-                url: 'http://localhost:4000'
-            }
-        ]
-
-    // components: {
-    //     securitySchemas: {
-    //         bearerAuth: {
-    //             type: 'http',
-    //             schema: 'bearer',
-    //             in: 'header',
-    //             bearerformat: 'JWT'
-    //         }
-    //     }
-    // },
-
-    // security: [{
-    //     bearerAuth: []
-    // }],
-      
+        servers:[ 
+            { 
+                url:'http://localhost:4000'
+            } 
+        ],
+       
     },
-    apis: ['./src/blogs/routes/routes', './src/comment/routes/comment', './src/user/routes/routes']
+    apis: ['./src/blogs/routes/*.js', './src/comments/routes/*.js', './src/contact/routes/*.js', './src/user/routes/*.js'],
 }
-const spaces = swaggerJsDoc(options)
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(spaces))
+
+const swaggerDocs = swaggerJSDoc(swaggerOptions)
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
+// app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(spaces))
 
 app.use("/b", routesblogs)
 app.use("/u", routesusers)
@@ -50,7 +44,7 @@ app.use("/c", routescomments)
 app.use("/c", routescontacts)
 
 mongose.connect("mongodb+srv://Gilbert:g7E8YNV7vNfQ-6L@atlascluster.ll9z7ue.mongodb.net/?retryWrites=true&w=majority", ()=> console.log("connected mongodb"))
-
+// mongodb+srv://atlascluster.ll9z7ue.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority
 // /**
 //  *  @swagger
 //  * /:
@@ -69,3 +63,4 @@ mongose.connect("mongodb+srv://Gilbert:g7E8YNV7vNfQ-6L@atlascluster.ll9z7ue.mong
 const port = 4000
 app.listen(port, () => console.log(`Server started on port ${port}`))
 
+// app.use("./api/user", require("./src/blogs/routes/routes"))
