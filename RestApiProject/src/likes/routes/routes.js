@@ -1,5 +1,5 @@
 const express = require("express")
-const posts = require("../controller/post")
+const posts = require("../controller/like")
 
 
 const route = express.Router()
@@ -19,10 +19,10 @@ const route = express.Router()
 *           500:
 *              description: Unexpected error.
 *  schemas:
-*     blogs:
+*     Like:
 *       type: object
 *       required:
-*          -image
+*          -
 *          -title
 *          -description1
 *          -description2 
@@ -79,7 +79,7 @@ const route = express.Router()
 *      400:
 *          $ref: '#/components/responses/400'
 */
-route.post('/blog/', posts.createPost);
+route.post('/like/', posts.createLike);
 
 /**
 * @swagger
@@ -100,32 +100,6 @@ route.get('/blog/', posts.getAll);
 
 /**
 * @swagger
-* /b/blog/{id}:
-*  patch:
-*    summary: updating blogs
-*    tags: [blogs]
-*    parameters:
-*        - $ref: '#/components/parameters/blogId'
-*    requestBody:
-*        required: true
-*        content:
-*           application/json:
-*                 schema:
-*                     $ref: '#/components/schemas/blogs'
-*    responses:
-*         200:
-*             description: Success update
-*         400:
-*             $ref: '#/components/responses/400'
-*         401:
-*             $ref: '#/components/responses/401'
-*         404:
-*            description: not found
-*/
-route.put("/blog/:id", posts.updatePost);
-
-/**
-* @swagger
 *  /b/blogs/{id}:
 *    delete:
 *     summary: Delete one blog
@@ -140,7 +114,7 @@ route.put("/blog/:id", posts.updatePost);
 *        404:
 *         description: not found
 */
-route.delete("/blog/:id", posts.deletePost);
+route.delete("/like/:id", posts.deleteLike);
 
 module.exports = route
 
